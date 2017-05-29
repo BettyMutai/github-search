@@ -4,9 +4,8 @@
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" href="build/css/vendor.css">
-   <link rel="stylesheet" href="build/css/styles.css">
-   <script src="build/js/vendor.min.js"></script>
-   <script type="text/javascript" src="build/js/app.js"></script>
+    <script src="build/js/vendor.min.js"></script>
+    <script src="build/js/app.js"></script>
   <title>Access Tokens</title>
 </head>
 
@@ -19,15 +18,17 @@
       <img src="https://assets-cdn.github.com/images/modules/open_graph/github-octocat.png" alt="img" height="100px">
     </div>
     <div class="col-md-10">
-       <form id="myForm">
-      <div class="form-group">
-        <input id="username" type="text" name="search" class="form-control" placeholder="Search GitHub">
-        <button id="search"class="btn btn-success">Submit</button>
-      </div>
-      <output id="result"></output>
-
+      <form id="myForm">
+        <div class="form-group">
+          <input id="username" type="text" name="search" class="form-control" placeholder="Search GitHub">
+          <button id="search" class="btn btn-success">Submit</button>
+        </div>
+        <div id="name"></div>
+        <div id="html"></div>
+        <div id="result"></div>
+      <div id="repos"></div>
       </form>
-</div>
+    </div>
   </div>
 
 </body>
