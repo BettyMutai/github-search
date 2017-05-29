@@ -1,5 +1,8 @@
 var apiKey = require('./../.env').apiKey;
 
+var Username=$("#username").val();
+$("#username").val("");
+
 function User(){
 }
 
@@ -13,5 +16,6 @@ User.prototype.getUser = function (name, displayFunction) {
     }).fail(function(error) {
       console.log(error.responseJSON.message);
     });
+  };
 
 exports.userModule = User;

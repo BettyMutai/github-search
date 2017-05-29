@@ -12,8 +12,6 @@ $(document).ready(function(){
   $("#search").click(function(event){
     event.preventDefault();
 
-    var Username=$("#username").val();
-    $("#username").val("");
 
 currentUser.getUser(name, displayRepository);
   });
