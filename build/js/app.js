@@ -4,43 +4,67 @@ exports.apiKey = "07a2d6350b22e51ccd67cbb53ff6126289cc109d"
 },{}],2:[function(require,module,exports){
 var apiKey = require('./../.env').apiKey;
 
-var Username=$("#username").val();
-$("#username").val("");
 
-function User(){
-}
+User = function() {
 
-User.prototype.getUser = function (name, displayFunction) {
-  $.get("https://api.github.com/users/" + Username + "?access_token=" + apiKey).then(function(response) {
-      console.log(response);
-      $("#name").append('<a href=" ' + response.login + ' ">'+ '</a>');
-      $("#html").append('<a href=" ' + response.html_url + ' ">'+ '</a>');
-      $("#result").append('<img src=" ' + response.avatar_url + ' ">');
-      $('#repos').append('<a href=" '+ response.repos_url + ' " >' + '</a>');
-    }).fail(function(error) {
-      console.log(error.responseJSON.message);
-    });
-  };
+};
+User.prototype.getAvatar = function(name, displayFunction) {
+  $.get('https://api.github.com/users/' + name + '?access_token=' + apiKey).then(function(avatar) {
+    displayFunction(avatar);
+  }).fail(function(error) {
+    $('.showAvatar').text("This Username " + name + " is " + error.responseJSON.message + "." +
+      "Please Enter the Correct Username");
+  });
+};
+
+User.prototype.getUser = function(name, displayFunction) {
+  $.get('https://api.github.com/users/' + name + '?access_token=' + apiKey).then(function(users) {
+    displayFunction(users);
+  }).fail(function(error) {
+    $('.showUser').text("This Username " + name + " is " + error.responseJSON.message + "." +
+      "Please Enter the Correct Username");
+  });
+};
+
+User.prototype.getRepos = function(name, displayFunction) {
+  $.get('https://api.github.com/users/' + name + '/repos?access_token=' + apiKey).then(function(repos) {
+    displayFunction(repos);
+  }).fail(function(error) {
+    $('.showUser').text("This Username " + name + " is " + error.responseJSON.message + "." +
+      "Please Enter the Correct Username");
+  });
+};
 
 exports.userModule = User;
 
 },{"./../.env":1}],3:[function(require,module,exports){
-var User = require("./../js/github.js").userModule;
+var User = require('./../js/github.js').userModule;
 
-var displayRepository = function (name, reponame) {
-  $("#result").text("");
-  if(reponame.name){
-    $("#result").append("<h3>"+reponame.name+"</h3>");
-  }
+var displayAvatar = function(avatar) {
+  $('#showAvatar').empty();
+  $('#showAvatar').html('<img src="' + avatar.avatar_url + '">');
 };
 
-$(document).ready(function(){
-  var currentUser = new User();
-  $("#search").click(function(event){
-    event.preventDefault();
+var displayUser = function(user) {
+  $('#showUser').empty();
+  $('#showUser').append("<li>" + user.name + "</li > ");
+};
 
+var displayRepositories = function(repos) {
+  $('#showRepos').empty();
+  repos.forEach(function(repo) {
+    $('#showRepos').append("<li><a href='" + repo.html_url + "'>" + repo.name + "</a>: " + repo.description + "</li > ");
+  });
+};
 
-currentUser.getUser(name, displayRepository);
+$(document).ready(function() {
+  var searchUsers = new User();
+  $('#search').click(function() {
+    var name = $('#username').val();
+    console.log(name);
+    searchUsers.getAvatar(name, displayAvatar);
+    searchUsers.getUser(name, displayUser);
+    searchUsers.getRepos(name, displayRepositories);
   });
 });
 
