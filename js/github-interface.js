@@ -1,18 +1,29 @@
-var User = require("./../js/github.js").userModule;
+var User = require('./../js/github.js').userModule;
 
-var displayRepository = function (name, reponame) {
-  $("#result").text("");
-  if(reponame.name){
-    $("#result").append("<h3>"+reponame.name+"</h3>");
-  }
+var displayAvatar = function(avatar) {
+  $('#showAvatar').empty();
+  $('#showAvatar').html('<img src="' + avatar.avatar_url + '">');
 };
 
-$(document).ready(function(){
-  var currentUser = new User();
-  $("#search").click(function(event){
-    event.preventDefault();
+var displayUser = function(user) {
+  $('#showUser').empty();
+  $('#showUser').append("<li>" + user.name + "</li > ");
+};
 
+var displayRepositories = function(repos) {
+  $('#showRepos').empty();
+  repos.forEach(function(repo) {
+    $('#showRepos').append("<li><a href='" + repo.html_url + "'>" + repo.name + "</a>: " + repo.description + "</li > ");
+  });
+};
 
-currentUser.getUser(name, displayRepository);
+$(document).ready(function() {
+  var searchUsers = new User();
+  $('#search').click(function() {
+    var name = $('#username').val();
+    console.log(name);
+    searchUsers.getAvatar(name, displayAvatar);
+    searchUsers.getUser(name, displayUser);
+    searchUsers.getRepos(name, displayRepositories);
   });
 });
